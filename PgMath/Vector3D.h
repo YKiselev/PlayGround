@@ -1,6 +1,6 @@
 #pragma once
 
-#include <math.h>
+#include <cmath>
 
 namespace Math
 {
@@ -25,6 +25,7 @@ namespace Math
 		Vector3D operator - (const Vector3D& other) const;
 		Vector3D operator * (const Vector3D& other) const;
 		Vector3D operator / (const Vector3D& other) const;
+		Vector3D operator - () const;
 	};
 
 
@@ -35,7 +36,7 @@ namespace Math
 
 	inline Vector3D Vector3D::crossProduct(const Vector3D& other) const
 	{
-		return Vector3D{ y * other.z - z * other.y, z * other.x - x * other.z, x * other.y - y * other.x };
+		return { y * other.z - z * other.y, z * other.x - x * other.z, x * other.y - y * other.x };
 	}
 
 	inline float Vector3D::lengthSquared() const
@@ -45,7 +46,7 @@ namespace Math
 
 	inline float Vector3D::length() const
 	{
-		return sqrt(lengthSquared());
+		return std::sqrt(lengthSquared());
 	}
 
 	inline Vector3D Vector3D::normalized() const
@@ -55,7 +56,7 @@ namespace Math
 		if (l != 0) {
 			ool = 1.0f / l;
 		}
-		return Vector3D{ x * ool, y * ool, z * ool };
+		return { x * ool, y * ool, z * ool };
 	}
 
 	inline bool Vector3D::operator == (const Vector3D& other) const
@@ -70,7 +71,7 @@ namespace Math
 
 	inline Vector3D Vector3D::operator * (float scale) const
 	{
-		return Vector3D{ x * scale, y * scale, z * scale };
+		return { x * scale, y * scale, z * scale };
 	}
 
 	inline Vector3D Vector3D::operator / (float scale) const
@@ -80,21 +81,26 @@ namespace Math
 
 	inline Vector3D Vector3D::operator + (const Vector3D & other) const
 	{
-		return Vector3D{ x + other.x, y + other.y,z + other.z };
+		return { x + other.x, y + other.y,z + other.z };
 	}
 
 	inline Vector3D Vector3D::operator - (const Vector3D & other) const
 	{
-		return Vector3D{ x - other.x,y - other.y,z - other.z };
+		return { x - other.x,y - other.y,z - other.z };
 	}
 
 	inline Vector3D Vector3D::operator * (const Vector3D & other) const
 	{
-		return Vector3D{ x * other.x,y * other.y,z * other.z };
+		return { x * other.x,y * other.y,z * other.z };
 	}
 
 	inline Vector3D Vector3D::operator / (const Vector3D & other) const
 	{
-		return Vector3D{ x / other.x,y / other.y, z / other.z };
+		return { x / other.x,y / other.y, z / other.z };
+	}
+
+	inline Vector3D Vector3D::operator - () const
+	{
+		return { -x, -y, -z };
 	}
 }

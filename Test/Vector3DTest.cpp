@@ -17,7 +17,7 @@ TEST(Vector3D, Normalization) {
 
 TEST(Vector3D, Length)
 {
-	EXPECT_FLOAT_EQ(sqrt(25 + 49 + 9), Vector3D(5, 7, 3).length());
+	EXPECT_FLOAT_EQ(std::sqrt(25.0f + 49 + 9), Vector3D(5, 7, 3).length());
 }
 
 TEST(Vector3D, LengthSquared)
