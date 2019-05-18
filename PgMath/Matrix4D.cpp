@@ -63,8 +63,6 @@ namespace Math
 			0, 0, 0, 1
 		);
 		return (~Matrix4D()) - eye;
-		//transpose(m, m);
-		//translate(m, -eye.x, -eye.y, -eye.z, m);
 	}
 
 	Matrix4D Matrix4D::rotate(float ax, float ay, float az) const

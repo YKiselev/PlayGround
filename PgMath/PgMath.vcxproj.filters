@@ -21,6 +21,9 @@
     <ClInclude Include="Matrix4D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Radians.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Matrix4D.cpp">

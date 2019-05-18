@@ -1,8 +1,10 @@
 #include "pch.h"
 #include <Matrix4D.h>
 #include <cmath>
+#include "Vector3D.h"
 
 using Math::Matrix4D;
+using Math::Vector3D;
 
 TEST(Matrix4D, Identity)
 {
@@ -218,9 +220,26 @@ TEST(Matrix4D, Transposes)
 	EXPECT_FLOAT_EQ(16, m.c4r4);
 }
 
+//class LookAtParameters : public ::testing::TestWithParam<std::tuple<Vector3D, Vector3D, Vector3D>>
+//{
+//};
+//
+//INSTANTIATE_TEST_CASE_P(Matrix4D, LookAtParameters, ::testing::Values(
+//	std::make_tuple(Vector3D(), Vector3D(), Vector3D()),
+//	std::make_tuple(Vector3D(), Vector3D(), Vector3D()),
+//	std::make_tuple(Vector3D(), Vector3D(), Vector3D()),
+//	std::make_tuple(Vector3D(), Vector3D(), Vector3D()),
+//	std::make_tuple(Vector3D(), Vector3D(), Vector3D())
+//));
+
+
 TEST(Matrix4D, LookAtPerspectiveProjection)
 {
-	const Matrix4D m = Matrix4D::lookAt();
+	//const std::tuple<Vector3D, Vector3D, Vector3D> t = GetParam();
+
+	//const Vector3D target = std::get<0>(t), eye = std::get<1>(t), up = std::get<2>(t);
+
+	const Matrix4D m;// = Matrix4D::lookAt(target, eye, up);
 
 	EXPECT_FLOAT_EQ(1, m.c1r1);
 	EXPECT_FLOAT_EQ(5, m.c1r2);
@@ -241,4 +260,28 @@ TEST(Matrix4D, LookAtPerspectiveProjection)
 	EXPECT_FLOAT_EQ(8, m.c4r2);
 	EXPECT_FLOAT_EQ(12, m.c4r3);
 	EXPECT_FLOAT_EQ(16, m.c4r4);
+}
+
+void testLookAt(Vector3D & target, Vector3D & eye, Vector3D & up)
+{
+	const Matrix4D m = Matrix4D::lookAt(target, eye, up);
+
+	EXPECT_FLOAT_EQ(8, 8);
+}
+
+class RotateTest : public ::testing::TestWithParam<std::tuple<float, float, float, Vector3D, Vector3D>>
+{
+};
+
+INSTANTIATE_TEST_CASE_P(Matrix4D, RotateTest, ::testing::Values(
+	std::make_tuple(90.0f, 0.0f, 0.0f, Vector3D(), Vector3D()),
+	std::make_tuple(90.0f, 0.0f, 0.0f, Vector3D(), Vector3D()),
+	std::make_tuple(90.0f, 0.0f, 0.0f, Vector3D(), Vector3D())
+));
+
+TEST_P(RotateTest, Rotation)
+{
+	const std::tuple<float, float, float, Vector3D, Vector3D> tuple = GetParam();
+
+
 }
