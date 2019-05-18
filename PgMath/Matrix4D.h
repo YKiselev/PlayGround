@@ -79,6 +79,8 @@ namespace Math
 		 */
 		static Matrix4D lookAt(const Vector3D& target, const Vector3D& eye, const Vector3D& up);
 
+		static Matrix4D rotation(float ax, float ay, float az);
+
 		/*
 			Translation operators
 		*/
@@ -96,9 +98,13 @@ namespace Math
 		*/
 		Matrix4D operator ~ () const;
 		Matrix4D rotate(float ax, float ay, float az) const;
-		Matrix4D inverse() const;
+		
+		/*
+			Calculates inverse matrix. Will set passed variable to false if inversion is not possible (matrix's determinant is zero).
+		*/
+		Matrix4D inverse(bool& success) const;
 
-		double determinant() const;
+		float determinant() const;
 
 		bool operator == (const Matrix4D& other) const;
 		bool operator != (const Matrix4D& other) const;
