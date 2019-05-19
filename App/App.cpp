@@ -2,16 +2,31 @@
 #include <iostream>
 #include <limits>
 
+class A
+{
+private:
+	int v;
+
+	A() {}
+
+public:
+	A(int v) : v{ v } {}
+};
 
 int main()
 {
-	std::cout << sizeof(1) << ", " << sizeof(char) << ", " << sizeof(int) << ", " << sizeof(short) << std::endl;
+	A a{ 1 }, b{ 2 }, c = {3};
 
-	std::numeric_limits<float> limits;
+	a = b;
 
-	std::cout << "max=" << limits.max() << ", min=" << limits.min() << std::endl;
+	if (true)
+	{
+		int g;
+	}
+	else
+	{
+		int f;
+	}
 
-	auto v = 123;
-
-	std::cout << sizeof(v);
+	void* p = nullptr;
 }

@@ -2,7 +2,7 @@
 #include "Matrix4D.h"
 
 
-namespace Math
+namespace math
 {
 
 	Matrix4D::Matrix4D(const float src[16]) : c1r1{ src[0] }, c1r2{ src[1] }, c1r3{ src[2] }, c1r4{ src[3] },
@@ -62,7 +62,7 @@ namespace Math
 			zaxis.x, zaxis.y, zaxis.z, 0,
 			0, 0, 0, 1
 		);
-		return (~Matrix4D()) - eye;
+		return (~m) - eye;
 	}
 
 	Matrix4D Matrix4D::rotation(float ax, float ay, float az)
@@ -160,7 +160,7 @@ namespace Math
 		const float det = c1r1 * A - c2r1 * B + c3r1 * C - c4r1 * D;
 		if (det == 0) {
 			success = false;
-			return Matrix4D();
+			return {};
 		}
 		const float ood = 1.0f / det;
 		success = true;
@@ -230,7 +230,12 @@ namespace Math
 
 	Matrix4D Matrix4D::operator + (const Matrix4D & b) const
 	{
-		return Matrix4D();
+		return {
+			c1r1 + b.c1r1, c1r2 + b.c1r2, c1r3 + b.c1r3, c1r4 + b.c1r4,
+			c2r1 + b.c2r1, c2r2 + b.c2r2, c2r3 + b.c2r3, c2r4 + b.c2r4,
+			c3r1 + b.c3r1, c3r2 + b.c3r2, c3r3 + b.c3r3, c3r4 + b.c3r4,
+			c4r1 + b.c4r1, c4r2 + b.c4r2, c4r3 + b.c4r3, c4r4 + b.c4r4
+		};
 	}
 
 	Matrix4D Matrix4D::operator + (const Vector3D & v) const
@@ -252,12 +257,22 @@ namespace Math
 
 	Matrix4D Matrix4D::operator - (const Matrix4D & b) const
 	{
-		return Matrix4D();
+		return {
+			c1r1 - b.c1r1, c1r2 - b.c1r2, c1r3 - b.c1r3, c1r4 - b.c1r4,
+			c2r1 - b.c2r1, c2r2 - b.c2r2, c2r3 - b.c2r3, c2r4 - b.c2r4,
+			c3r1 - b.c3r1, c3r2 - b.c3r2, c3r3 - b.c3r3, c3r4 - b.c3r4,
+			c4r1 - b.c4r1, c4r2 - b.c4r2, c4r3 - b.c4r3, c4r4 - b.c4r4
+		};
 	}
 
 	Matrix4D Matrix4D::operator * (float scale) const
 	{
-		return Matrix4D();
+		return {
+			c1r1 * scale, c1r2 * scale, c1r3 * scale, c1r4 * scale,
+			c2r1 * scale, c2r2 * scale, c2r3 * scale, c2r4 * scale,
+			c3r1 * scale, c3r2 * scale, c3r3 * scale, c3r4 * scale,
+			c4r1 * scale, c4r2 * scale, c4r3 * scale, c4r4 * scale
+		};
 	}
 
 	//
@@ -294,9 +309,13 @@ namespace Math
 		};
 	}
 
-	Matrix4D Matrix4D::operator * (const Vector3D & b) const
+	Vector3D Matrix4D::operator * (const Vector3D & b) const
 	{
-		return Matrix4D();
+		return {
+			c1r1 * b.x + c2r1 * b.y + c3r1 * b.z + c4r1,
+			c1r2 * b.x + c2r2 * b.y + c3r2 * b.z + c4r2,
+			c1r3 * b.x + c2r3 * b.y + c3r3 * b.z + c4r3,
+		};
 	}
 
 	Matrix4D Matrix4D::operator ~ () const

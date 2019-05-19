@@ -1,7 +1,7 @@
 #include "pch.h"
 #include <Vector3D.h>
 
-using Math::Vector3D;
+using math::Vector3D;
 
 TEST(Vector3D, Normalization) {
 	EXPECT_EQ(Vector3D(1, 0, 0), Vector3D(10, 0, 0).normalized());

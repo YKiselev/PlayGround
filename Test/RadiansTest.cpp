@@ -3,44 +3,44 @@
 
 TEST(Radians, ToRadians)
 {
-	EXPECT_FLOAT_EQ(0, Math::toRadians(0));
-	EXPECT_FLOAT_EQ(Math::PI / 4, Math::toRadians(45));
-	EXPECT_FLOAT_EQ(Math::PI / 2, Math::toRadians(90));
-	EXPECT_FLOAT_EQ(3 * Math::PI / 4, Math::toRadians(135));
-	EXPECT_FLOAT_EQ(Math::PI, Math::toRadians(180));
-	EXPECT_FLOAT_EQ(5 * Math::PI / 4, Math::toRadians(225));
-	EXPECT_FLOAT_EQ(3 * Math::PI / 2, Math::toRadians(270));
-	EXPECT_FLOAT_EQ(7 * Math::PI / 4, Math::toRadians(315));
-	EXPECT_FLOAT_EQ(2 * Math::PI, Math::toRadians(360));
+	EXPECT_FLOAT_EQ(0, math::toRadians(0));
+	EXPECT_FLOAT_EQ(math::PI / 4, math::toRadians(45));
+	EXPECT_FLOAT_EQ(math::PI / 2, math::toRadians(90));
+	EXPECT_FLOAT_EQ(3 * math::PI / 4, math::toRadians(135));
+	EXPECT_FLOAT_EQ(math::PI, math::toRadians(180));
+	EXPECT_FLOAT_EQ(5 * math::PI / 4, math::toRadians(225));
+	EXPECT_FLOAT_EQ(3 * math::PI / 2, math::toRadians(270));
+	EXPECT_FLOAT_EQ(7 * math::PI / 4, math::toRadians(315));
+	EXPECT_FLOAT_EQ(2 * math::PI, math::toRadians(360));
 
-	EXPECT_FLOAT_EQ(-Math::PI / 4, Math::toRadians(-45));
-	EXPECT_FLOAT_EQ(-Math::PI / 2, Math::toRadians(-90));
-	EXPECT_FLOAT_EQ(-3 * Math::PI / 4, Math::toRadians(-135));
-	EXPECT_FLOAT_EQ(-Math::PI, Math::toRadians(-180));
-	EXPECT_FLOAT_EQ(-5 * Math::PI / 4, Math::toRadians(-225));
-	EXPECT_FLOAT_EQ(-3 * Math::PI / 2, Math::toRadians(-270));
-	EXPECT_FLOAT_EQ(-7 * Math::PI / 4, Math::toRadians(-315));
-	EXPECT_FLOAT_EQ(-2 * Math::PI, Math::toRadians(-360));
+	EXPECT_FLOAT_EQ(-math::PI / 4, math::toRadians(-45));
+	EXPECT_FLOAT_EQ(-math::PI / 2, math::toRadians(-90));
+	EXPECT_FLOAT_EQ(-3 * math::PI / 4, math::toRadians(-135));
+	EXPECT_FLOAT_EQ(-math::PI, math::toRadians(-180));
+	EXPECT_FLOAT_EQ(-5 * math::PI / 4, math::toRadians(-225));
+	EXPECT_FLOAT_EQ(-3 * math::PI / 2, math::toRadians(-270));
+	EXPECT_FLOAT_EQ(-7 * math::PI / 4, math::toRadians(-315));
+	EXPECT_FLOAT_EQ(-2 * math::PI, math::toRadians(-360));
 }
 
 TEST(Radians, ToDegrees)
 {
-	EXPECT_FLOAT_EQ(0, Math::toDegrees(0));
-	EXPECT_FLOAT_EQ(45, Math::toDegrees(Math::PI / 4));
-	EXPECT_FLOAT_EQ(90, Math::toDegrees(Math::PI / 2));
-	EXPECT_FLOAT_EQ(135, Math::toDegrees(3 * Math::PI / 4));
-	EXPECT_FLOAT_EQ(180, Math::toDegrees(Math::PI));
-	EXPECT_FLOAT_EQ(225, Math::toDegrees(5 * Math::PI / 4));
-	EXPECT_FLOAT_EQ(270, Math::toDegrees(3 * Math::PI / 2));
-	EXPECT_FLOAT_EQ(315, Math::toDegrees(7 * Math::PI / 4));
-	EXPECT_FLOAT_EQ(360, Math::toDegrees(2 * Math::PI));
+	EXPECT_FLOAT_EQ(0, math::toDegrees(0));
+	EXPECT_FLOAT_EQ(45, math::toDegrees(math::PI / 4));
+	EXPECT_FLOAT_EQ(90, math::toDegrees(math::PI / 2));
+	EXPECT_FLOAT_EQ(135, math::toDegrees(3 * math::PI / 4));
+	EXPECT_FLOAT_EQ(180, math::toDegrees(math::PI));
+	EXPECT_FLOAT_EQ(225, math::toDegrees(5 * math::PI / 4));
+	EXPECT_FLOAT_EQ(270, math::toDegrees(3 * math::PI / 2));
+	EXPECT_FLOAT_EQ(315, math::toDegrees(7 * math::PI / 4));
+	EXPECT_FLOAT_EQ(360, math::toDegrees(2 * math::PI));
 
-	EXPECT_FLOAT_EQ(-45, Math::toDegrees(-Math::PI / 4));
-	EXPECT_FLOAT_EQ(-90, Math::toDegrees(-Math::PI / 2));
-	EXPECT_FLOAT_EQ(-135, Math::toDegrees(-3 * Math::PI / 4));
-	EXPECT_FLOAT_EQ(-180, Math::toDegrees(-Math::PI));
-	EXPECT_FLOAT_EQ(-225, Math::toDegrees(-5 * Math::PI / 4));
-	EXPECT_FLOAT_EQ(-270, Math::toDegrees(-3 * Math::PI / 2));
-	EXPECT_FLOAT_EQ(-315, Math::toDegrees(-7 * Math::PI / 4));
-	EXPECT_FLOAT_EQ(-360, Math::toDegrees(-2 * Math::PI));
+	EXPECT_FLOAT_EQ(-45, math::toDegrees(-math::PI / 4));
+	EXPECT_FLOAT_EQ(-90, math::toDegrees(-math::PI / 2));
+	EXPECT_FLOAT_EQ(-135, math::toDegrees(-3 * math::PI / 4));
+	EXPECT_FLOAT_EQ(-180, math::toDegrees(-math::PI));
+	EXPECT_FLOAT_EQ(-225, math::toDegrees(-5 * math::PI / 4));
+	EXPECT_FLOAT_EQ(-270, math::toDegrees(-3 * math::PI / 2));
+	EXPECT_FLOAT_EQ(-315, math::toDegrees(-7 * math::PI / 4));
+	EXPECT_FLOAT_EQ(-360, math::toDegrees(-2 * math::PI));
 }

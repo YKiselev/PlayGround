@@ -4,8 +4,8 @@
 #include <Vector3D.h>
 #include <Radians.h>
 
-using Math::Matrix4D;
-using Math::Vector3D;
+using math::Matrix4D;
+using math::Vector3D;
 
 TEST(Matrix4D, Identity)
 {
@@ -306,6 +306,125 @@ TEST(Matrix4D, Inverse)
 	EXPECT_FLOAT_EQ(-85.0f / 2369, m.c4r4);
 }
 
+TEST(Matrix4D, Add)
+{
+	const Matrix4D a{
+		1, 2, 4, 6,
+		3, 1, 7, 10,
+		5, 8, 1, 12,
+		9, 11, 13, 1
+	}, b{
+		20, 21, 22, 23,
+		24, 25, 26, 27,
+		28, 29, 30, 31,
+		32, 33, 34, 35
+	};
+	const Matrix4D m = a + b;
+
+	EXPECT_FLOAT_EQ(21, m.c1r1);
+	EXPECT_FLOAT_EQ(23, m.c1r2);
+	EXPECT_FLOAT_EQ(26, m.c1r3);
+	EXPECT_FLOAT_EQ(29, m.c1r4);
+
+	EXPECT_FLOAT_EQ(27, m.c2r1);
+	EXPECT_FLOAT_EQ(26, m.c2r2);
+	EXPECT_FLOAT_EQ(33, m.c2r3);
+	EXPECT_FLOAT_EQ(37, m.c2r4);
+
+	EXPECT_FLOAT_EQ(33, m.c3r1);
+	EXPECT_FLOAT_EQ(37, m.c3r2);
+	EXPECT_FLOAT_EQ(31, m.c3r3);
+	EXPECT_FLOAT_EQ(43, m.c3r4);
+
+	EXPECT_FLOAT_EQ(41, m.c4r1);
+	EXPECT_FLOAT_EQ(44, m.c4r2);
+	EXPECT_FLOAT_EQ(47, m.c4r3);
+	EXPECT_FLOAT_EQ(36, m.c4r4);
+}
+
+TEST(Matrix4D, Subtract)
+{
+	const Matrix4D a{
+		1, 2, 4, 6,
+		3, 1, 7, 10,
+		5, 8, 1, 12,
+		9, 11, 13, 1
+	}, b{
+		20, 21, 22, 23,
+		24, 25, 26, 27,
+		28, 29, 30, 31,
+		32, 33, 34, 35
+	};
+	const Matrix4D m = a - b;
+
+	EXPECT_FLOAT_EQ(-19, m.c1r1);
+	EXPECT_FLOAT_EQ(-19, m.c1r2);
+	EXPECT_FLOAT_EQ(-18, m.c1r3);
+	EXPECT_FLOAT_EQ(-17, m.c1r4);
+
+	EXPECT_FLOAT_EQ(-21, m.c2r1);
+	EXPECT_FLOAT_EQ(-24, m.c2r2);
+	EXPECT_FLOAT_EQ(-19, m.c2r3);
+	EXPECT_FLOAT_EQ(-17, m.c2r4);
+
+	EXPECT_FLOAT_EQ(-23, m.c3r1);
+	EXPECT_FLOAT_EQ(-21, m.c3r2);
+	EXPECT_FLOAT_EQ(-29, m.c3r3);
+	EXPECT_FLOAT_EQ(-19, m.c3r4);
+
+	EXPECT_FLOAT_EQ(-23, m.c4r1);
+	EXPECT_FLOAT_EQ(-22, m.c4r2);
+	EXPECT_FLOAT_EQ(-21, m.c4r3);
+	EXPECT_FLOAT_EQ(-34, m.c4r4);
+}
+
+TEST(Matrix4D, MultiplyByScalar)
+{
+	const Matrix4D a{
+		1, 2, 4, 6,
+		3, 1, 7, 10,
+		5, 8, 1, 12,
+		9, 11, 13, 1
+	};
+	const Matrix4D m = a * 2.5f;
+
+	EXPECT_FLOAT_EQ(2.5f, m.c1r1);
+	EXPECT_FLOAT_EQ(2 * 2.5f, m.c1r2);
+	EXPECT_FLOAT_EQ(4 * 2.5, m.c1r3);
+	EXPECT_FLOAT_EQ(6 * 2.5f, m.c1r4);
+
+	EXPECT_FLOAT_EQ(3 * 2.5f, m.c2r1);
+	EXPECT_FLOAT_EQ(1 * 2.5f, m.c2r2);
+	EXPECT_FLOAT_EQ(7 * 2.5f, m.c2r3);
+	EXPECT_FLOAT_EQ(10 * 2.5f, m.c2r4);
+
+	EXPECT_FLOAT_EQ(5 * 2.5f, m.c3r1);
+	EXPECT_FLOAT_EQ(8 * 2.5f, m.c3r2);
+	EXPECT_FLOAT_EQ(1 * 2.5f, m.c3r3);
+	EXPECT_FLOAT_EQ(12 * 2.5f, m.c3r4);
+
+	EXPECT_FLOAT_EQ(9 * 2.5f, m.c4r1);
+	EXPECT_FLOAT_EQ(11 * 2.5f, m.c4r2);
+	EXPECT_FLOAT_EQ(13 * 2.5f, m.c4r3);
+	EXPECT_FLOAT_EQ(1 * 2.5f, m.c4r4);
+}
+
+TEST(Matrix4D, MultiplyByVector3D)
+{
+	const Matrix4D a{
+		1, 2, 4, 6,
+		3, 1, 7, 10,
+		5, 8, 1, 12,
+		9, 11, 13, 1
+	};
+	const Vector3D v{ 1,2,3 };
+	const Vector3D r = a * v;
+
+	EXPECT_FLOAT_EQ(1 * 1 + 3 * 2 + 5 * 3 + 9, r.x);
+	EXPECT_FLOAT_EQ(2 * 1 + 1 * 2 + 8 * 3 + 11, r.y);
+	EXPECT_FLOAT_EQ(4 * 1 + 7 * 2 + 1 * 3 + 13, r.z);
+}
+
 //class LookAtParameters : public ::testing::TestWithParam<std::tuple<Vector3D, Vector3D, Vector3D>>
 //{
 //};
@@ -348,13 +467,6 @@ TEST(Matrix4D, LookAtPerspectiveProjection)
 	EXPECT_FLOAT_EQ(16, m.c4r4);
 }
 
-void testLookAt(Vector3D & target, Vector3D & eye, Vector3D & up)
-{
-	const Matrix4D m = Matrix4D::lookAt(target, eye, up);
-
-	EXPECT_FLOAT_EQ(8, 8);
-}
-
 class RotateTest : public ::testing::TestWithParam<std::tuple<float, float, float, Vector3D, Vector3D>>
 {
 };
@@ -374,9 +486,9 @@ TEST_P(RotateTest, Rotation)
 	const Vector3D v1 = std::get<3>(tuple);
 	const Vector3D v2 = std::get<4>(tuple);
 	const Matrix4D m = Matrix4D::rotation(
-		Math::toRadians(ax),
-		Math::toRadians(ay),
-		Math::toRadians(az)
+		math::toRadians(ax),
+		math::toRadians(ay),
+		math::toRadians(az)
 	);
 
 	EXPECT_FLOAT_EQ(1, m.c1r1);

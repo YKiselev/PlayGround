@@ -2,7 +2,7 @@
 
 #include "Vector3D.h"
 
-namespace Math
+namespace math
 {
 	/*
 		Column-oriented matrix
@@ -91,7 +91,7 @@ namespace Math
 		Matrix4D operator - (const Matrix4D& b) const;
 		Matrix4D operator * (float scale) const;
 		Matrix4D operator * (const Matrix4D& b) const;
-		Matrix4D operator * (const Vector3D& b) const;
+		Vector3D operator * (const Vector3D& b) const;
 
 		/*
 			Transposition operator
