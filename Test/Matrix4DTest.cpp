@@ -1,6 +1,6 @@
 #include "pch.h"
-#include <Matrix4D.h>
 #include <cmath>
+#include <Matrix4D.h>
 #include <Vector3D.h>
 #include <Radians.h>
 
@@ -425,46 +425,51 @@ TEST(Matrix4D, MultiplyByVector3D)
 	EXPECT_FLOAT_EQ(4 * 1 + 7 * 2 + 1 * 3 + 13, r.z);
 }
 
-//class LookAtParameters : public ::testing::TestWithParam<std::tuple<Vector3D, Vector3D, Vector3D>>
-//{
-//};
-//
-//INSTANTIATE_TEST_CASE_P(Matrix4D, LookAtParameters, ::testing::Values(
-//	std::make_tuple(Vector3D(), Vector3D(), Vector3D()),
-//	std::make_tuple(Vector3D(), Vector3D(), Vector3D()),
-//	std::make_tuple(Vector3D(), Vector3D(), Vector3D()),
-//	std::make_tuple(Vector3D(), Vector3D(), Vector3D()),
-//	std::make_tuple(Vector3D(), Vector3D(), Vector3D())
-//));
-
-
-TEST(Matrix4D, LookAtPerspectiveProjection)
+class LookAtParameters : public ::testing::TestWithParam<std::tuple<Vector3D, Vector3D, Vector3D, Vector3D, Vector3D, Vector3D>>
 {
-	//const std::tuple<Vector3D, Vector3D, Vector3D> t = GetParam();
+};
 
-	//const Vector3D target = std::get<0>(t), eye = std::get<1>(t), up = std::get<2>(t);
+INSTANTIATE_TEST_CASE_P(Matrix4D, LookAtParameters, ::testing::Values(
+	std::make_tuple(Vector3D(1, 0, 0), Vector3D(0, 0, 0), Vector3D(0, 0, 1), Vector3D(0, 0, -1), Vector3D(-1, 0, 0), Vector3D(0, 1, 0)),
+	std::make_tuple(Vector3D(1, 1, 0), Vector3D(0, 0, 0), Vector3D(0, 0, 1), Vector3D(0.707f, 0, -0.707f), Vector3D(-0.707f, 0, -0.707f), Vector3D(0, 1, 0)),
+	std::make_tuple(Vector3D(0, 1, 0), Vector3D(0, 0, 0), Vector3D(0, 0, 1), Vector3D(1, 0, 0), Vector3D(0, 0, -1), Vector3D(0, 1, 0)),
+	std::make_tuple(Vector3D(0, 0, 1), Vector3D(0, 0, 0), Vector3D(-1, 0, 0), Vector3D(0, -1, 0), Vector3D(-1, 0, 0), Vector3D(0, 0, -1)),
+	std::make_tuple(Vector3D(0, 0, 0), Vector3D(-1, 0, 0), Vector3D(0, 0, 1), Vector3D(0, 0, -2), Vector3D(-1, 0, -1), Vector3D(0, 1, -1)),
+	std::make_tuple(Vector3D(0, 0, 0), Vector3D(-1, -1, 0), Vector3D(0, 0, 1), Vector3D(0.707f, 0, -2.121f), Vector3D(-0.707f, 0, -2.121f), Vector3D(0, 1, -1.414f)),
+	std::make_tuple(Vector3D(0, 0, 0), Vector3D(0, -1, 0), Vector3D(0, 0, 1), Vector3D(1, 0, -1), Vector3D(0, 0, -2), Vector3D(0, 1, -1))
+));
 
-	const Matrix4D m;// = Matrix4D::lookAt(target, eye, up);
 
-	EXPECT_FLOAT_EQ(1, m.c1r1);
-	EXPECT_FLOAT_EQ(5, m.c1r2);
-	EXPECT_FLOAT_EQ(9, m.c1r3);
-	EXPECT_FLOAT_EQ(13, m.c1r4);
+TEST_P(LookAtParameters, LookAtPerspectiveProjection)
+{
+	const std::tuple<Vector3D, Vector3D, Vector3D, Vector3D, Vector3D, Vector3D> t = GetParam();
 
-	EXPECT_FLOAT_EQ(2, m.c2r1);
-	EXPECT_FLOAT_EQ(6, m.c2r2);
-	EXPECT_FLOAT_EQ(10, m.c2r3);
-	EXPECT_FLOAT_EQ(14, m.c2r4);
+	const Vector3D target = std::get<0>(t),
+		eye = std::get<1>(t),
+		up = std::get<2>(t),
+		ax = std::get<3>(t),
+		ay = std::get<4>(t),
+		az = std::get<5>(t);
 
-	EXPECT_FLOAT_EQ(3, m.c3r1);
-	EXPECT_FLOAT_EQ(7, m.c3r2);
-	EXPECT_FLOAT_EQ(11, m.c3r3);
-	EXPECT_FLOAT_EQ(15, m.c3r4);
+	const Matrix4D m = Matrix4D::lookAt(target, eye, up);
+	const Vector3D v1 = Vector3D(1, 0, 0),
+		v2 = Vector3D(0, 1, 0),
+		v3 = Vector3D(0, 0, 1),
+		r1 = m * v1,
+		r2 = m * v2,
+		r3 = m * v3;
 
-	EXPECT_FLOAT_EQ(4, m.c4r1);
-	EXPECT_FLOAT_EQ(8, m.c4r2);
-	EXPECT_FLOAT_EQ(12, m.c4r3);
-	EXPECT_FLOAT_EQ(16, m.c4r4);
+	EXPECT_NEAR(ax.x, r1.x, 0.001f);
+	EXPECT_NEAR(ax.y, r1.y, 0.001f);
+	EXPECT_NEAR(ax.z, r1.z, 0.001f);
+
+	EXPECT_NEAR(ay.x, r2.x, 0.001f);
+	EXPECT_NEAR(ay.y, r2.y, 0.001f);
+	EXPECT_NEAR(ay.z, r2.z, 0.001f);
+
+	EXPECT_NEAR(az.x, r3.x, 0.001f);
+	EXPECT_NEAR(az.y, r3.y, 0.001f);
+	EXPECT_NEAR(az.z, r3.z, 0.001f);
 }
 
 class RotateTest : public ::testing::TestWithParam<std::tuple<float, float, float, Vector3D, Vector3D>>
@@ -472,9 +477,9 @@ class RotateTest : public ::testing::TestWithParam<std::tuple<float, float, floa
 };
 
 INSTANTIATE_TEST_CASE_P(Matrix4D, RotateTest, ::testing::Values(
-	std::make_tuple(90.0f, 0.0f, 0.0f, Vector3D(0, 1, 0), Vector3D(0, 0, 1)),
-	std::make_tuple(90.0f, 0.0f, 0.0f, Vector3D(1, 0, 0), Vector3D(0, 0, -1)),
-	std::make_tuple(90.0f, 0.0f, 0.0f, Vector3D(1, 0, 0), Vector3D(0, 1, 0))
+	std::make_tuple(90.0f, 0, 0, Vector3D(0, 1, 0), Vector3D(0, 0, 1)),
+	std::make_tuple(0, 90.0f, 0, Vector3D(1, 0, 0), Vector3D(0, 0, -1)),
+	std::make_tuple(0, 0, 90.0f, Vector3D(1, 0, 0), Vector3D(0, 1, 0))
 ));
 
 TEST_P(RotateTest, Rotation)
@@ -490,24 +495,9 @@ TEST_P(RotateTest, Rotation)
 		math::toRadians(ay),
 		math::toRadians(az)
 	);
+	const Vector3D r = m * v1;
 
-	EXPECT_FLOAT_EQ(1, m.c1r1);
-	EXPECT_FLOAT_EQ(0, m.c1r2);
-	EXPECT_FLOAT_EQ(0, m.c1r3);
-	EXPECT_FLOAT_EQ(0, m.c1r4);
-
-	EXPECT_FLOAT_EQ(2, m.c2r1);
-	EXPECT_FLOAT_EQ(6, m.c2r2);
-	EXPECT_FLOAT_EQ(10, m.c2r3);
-	EXPECT_FLOAT_EQ(14, m.c2r4);
-
-	EXPECT_FLOAT_EQ(3, m.c3r1);
-	EXPECT_FLOAT_EQ(7, m.c3r2);
-	EXPECT_FLOAT_EQ(11, m.c3r3);
-	EXPECT_FLOAT_EQ(15, m.c3r4);
-
-	EXPECT_FLOAT_EQ(4, m.c4r1);
-	EXPECT_FLOAT_EQ(8, m.c4r2);
-	EXPECT_FLOAT_EQ(12, m.c4r3);
-	EXPECT_FLOAT_EQ(16, m.c4r4);
+	EXPECT_NEAR(v2.x, r.x, 0.0001f);
+	EXPECT_NEAR(v2.y, r.y, 0.0001f);
+	EXPECT_NEAR(v2.z, r.z, 0.0001f);
 }

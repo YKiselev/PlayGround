@@ -2,22 +2,20 @@
 #include <iostream>
 #include <limits>
 
-class A
+struct A
 {
-private:
-	int v;
-
-	A() {}
-
 public:
-	A(int v) : v{ v } {}
+	const float x;
+
+	A(float v) : x{ v } {}
+	A(const A& src) : x{ src.x } {}
 };
 
 int main()
 {
-	A a{ 1 }, b{ 2 }, c = {3};
+	A a{ 1 }, b{ 2 }, c = { 3 };
 
-	a = b;
+	A d = b;
 
 	if (true)
 	{
