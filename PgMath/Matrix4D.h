@@ -100,7 +100,7 @@ namespace math
 		Matrix4D rotate(float ax, float ay, float az) const;
 		
 		/*
-			Calculates inverse matrix. Will set passed variable to false if inversion is not possible (matrix's determinant is zero).
+			Calculates inverse matrix. Will set passed variable to false if inversion is not possible (e.g. matrix's determinant is zero).
 		*/
 		Matrix4D inverse(bool& success) const;
 

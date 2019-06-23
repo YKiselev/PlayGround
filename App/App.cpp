@@ -1,30 +1,38 @@
-
 #include <iostream>
-#include <limits>
+#include <thread>
+#include <GLFW/glfw3.h>
+#include "AppWindow.h"
 
-struct A
+void errorCallback(int error, const char* description)
 {
-public:
-	const float x;
-
-	A(float v) : x{ v } {}
-	A(const A& src) : x{ src.x } {}
-};
+	std::cout << "ERROR(" << error << ", \"" << description << "\"" << std::endl;
+}
 
 int main()
 {
-	A a{ 1 }, b{ 2 }, c = { 3 };
+	glfwSetErrorCallback(errorCallback);
 
-	A d = b;
-
-	if (true)
+	if (!glfwInit())
 	{
-		int g;
-	}
-	else
-	{
-		int f;
+		return 1;
 	}
 
-	void* p = nullptr;
+	{
+		const app::AppWindow window;
+
+		window.makeContextCurrent();
+		glfwSwapInterval(1);
+
+		const std::chrono::milliseconds timespan(5);
+		while (!window.shouldClose())
+		{
+			glfwPollEvents();
+			window.swapBuffers();
+			std::this_thread::sleep_for(timespan);
+		}
+	}
+	
+	glfwTerminate();
+
+	return 0;
 }

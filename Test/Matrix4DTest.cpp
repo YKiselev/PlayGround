@@ -477,9 +477,9 @@ class RotateTest : public ::testing::TestWithParam<std::tuple<float, float, floa
 };
 
 INSTANTIATE_TEST_CASE_P(Matrix4D, RotateTest, ::testing::Values(
-	std::make_tuple(90.0f, 0, 0, Vector3D(0, 1, 0), Vector3D(0, 0, 1)),
-	std::make_tuple(0, 90.0f, 0, Vector3D(1, 0, 0), Vector3D(0, 0, -1)),
-	std::make_tuple(0, 0, 90.0f, Vector3D(1, 0, 0), Vector3D(0, 1, 0))
+	std::make_tuple(90.0f, 0.f, 0.f, Vector3D(0, 1, 0), Vector3D(0, 0, 1)),
+	std::make_tuple(0.f, 90.0f, 0.f, Vector3D(1, 0, 0), Vector3D(0, 0, -1)),
+	std::make_tuple(0.f, 0.f, 90.0f, Vector3D(1, 0, 0), Vector3D(0, 1, 0))
 ));
 
 TEST_P(RotateTest, Rotation)
