@@ -113,7 +113,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\Middleware\glfw-3.3.bin.WIN64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)PgCommon;$(SolutionDir)PgMath;$(SolutionDir)..\Middleware\glfw-3.3.bin.WIN64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -156,7 +156,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\Middleware\glfw-3.3.bin.WIN64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)PgCommon;$(SolutionDir)PgMath;$(SolutionDir)..\Middleware\glfw-3.3.bin.WIN64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -173,6 +173,9 @@
     <ClCompile Include="AppWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PgCommon\PgCommon.vcxproj">
+      <Project>{346a7119-0b56-416d-b80e-14c7f5c1f643}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\PgMath\PgMath.vcxproj">
       <Project>{7ec5755b-6c02-414e-af2f-ebd6faa5b686}</Project>
     </ProjectReference>

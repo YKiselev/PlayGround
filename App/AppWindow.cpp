@@ -5,39 +5,63 @@
 
 namespace app
 {
-	GLFWwindow* const createWindow()
+	AppWindow::AppWindow(GLFWwindow* wnd) : window{ wnd }
 	{
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-		GLFWwindow* const window = glfwCreateWindow(800, 600, "My window", nullptr, nullptr);
-		if (!window)
-		{
-			throw std::runtime_error("Unable to create application window!");
-		}
-		return window;
 	}
 
-	AppWindow::AppWindow() : window{ createWindow() }
+	//AppWindow::AppWindow(const char* title, const Size& size, const ContextVersion& contextVersion, bool fullScreen)
+	//{
+	//	::glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, std::get<0>(contextVersion));
+	//	::glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, std::get<1>(contextVersion));
+	//	window = ::glfwCreateWindow(std::get<0>(size), std::get<1>(size), title, nullptr, nullptr);
+	//	if (!window)
+	//	{
+	//		throw std::runtime_error("Unable to create application window!");
+	//	}
+	//}
+
+	AppWindow::AppWindow(AppWindow&& src) noexcept : window{ src.window }
 	{
+		src.window = nullptr;
 	}
 
 	AppWindow::~AppWindow()
 	{
-		glfwDestroyWindow(window);
+		::glfwDestroyWindow(window);
+		window = nullptr;
 	}
 
 	void AppWindow::makeContextCurrent() const
 	{
-		glfwMakeContextCurrent(window);
+		::glfwMakeContextCurrent(window);
 	}
 
 	bool AppWindow::shouldClose() const
 	{
-		return glfwWindowShouldClose(window);
+		return ::glfwWindowShouldClose(window);
 	}
 
 	void AppWindow::swapBuffers() const
 	{
-		glfwSwapBuffers(window);
+		::glfwSwapBuffers(window);
+	}
+
+	AppWindow& AppWindow::operator = (AppWindow&& src) noexcept
+	{
+		window = src.window;
+		src.window = nullptr;
+		return *this;
+	}
+
+	AppWindow AppWindow::Builder::build()
+	{
+		::glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, majorVersion);
+		::glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, minorVersion);
+		GLFWwindow* window = ::glfwCreateWindow(width, height, title, nullptr, nullptr);
+		if (!window)
+		{
+			throw std::runtime_error("Unable to create application window!");
+		}
+		return AppWindow(window);
 	}
 }

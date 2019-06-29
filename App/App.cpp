@@ -1,7 +1,9 @@
 #include <iostream>
 #include <thread>
 #include <GLFW/glfw3.h>
+#include <ScopeGuard.h>
 #include "AppWindow.h"
+
 
 void errorCallback(int error, const char* description)
 {
@@ -10,29 +12,26 @@ void errorCallback(int error, const char* description)
 
 int main()
 {
-	glfwSetErrorCallback(errorCallback);
+	::glfwSetErrorCallback(errorCallback);
 
-	if (!glfwInit())
+	if (!::glfwInit())
 	{
 		return 1;
 	}
+	const pg::commons::OnScopeExit terminator{ ::glfwTerminate };
 
+	const app::AppWindow window = app::AppWindow::Builder{}.build();
+
+	window.makeContextCurrent();
+	::glfwSwapInterval(1);
+
+	const std::chrono::milliseconds timespan(5);
+	while (!window.shouldClose())
 	{
-		const app::AppWindow window;
-
-		window.makeContextCurrent();
-		glfwSwapInterval(1);
-
-		const std::chrono::milliseconds timespan(5);
-		while (!window.shouldClose())
-		{
-			glfwPollEvents();
-			window.swapBuffers();
-			std::this_thread::sleep_for(timespan);
-		}
+		::glfwPollEvents();
+		window.swapBuffers();
+		std::this_thread::sleep_for(timespan);
 	}
-	
-	glfwTerminate();
 
 	return 0;
 }

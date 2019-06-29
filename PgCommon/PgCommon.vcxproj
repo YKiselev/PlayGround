@@ -154,6 +154,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
+    <ClInclude Include="ScopeGuard.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
