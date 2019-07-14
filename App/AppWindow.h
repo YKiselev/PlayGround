@@ -5,6 +5,9 @@
 
 namespace app
 {
+	/*
+		AppWindow
+	*/
 	class AppWindow
 	{
 	public:
@@ -26,7 +29,35 @@ namespace app
 		GLFWwindow* window;
 	};
 
+	/*
+		Inline methods
+	*/
 
+	inline void AppWindow::makeContextCurrent() const
+	{
+		::glfwMakeContextCurrent(window);
+	}
+
+	inline bool AppWindow::shouldClose() const
+	{
+		return ::glfwWindowShouldClose(window);
+	}
+
+	inline void AppWindow::swapBuffers() const
+	{
+		::glfwSwapBuffers(window);
+	}
+
+	inline AppWindow& AppWindow::operator = (AppWindow&& src) noexcept
+	{
+		window = src.window;
+		src.window = nullptr;
+		return *this;
+	}
+
+	/*
+		AppWindow builder
+	*/
 	class AppWindow::Builder
 	{
 	public:

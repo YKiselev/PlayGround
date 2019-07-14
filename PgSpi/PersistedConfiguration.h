@@ -1,97 +1,122 @@
 #pragma once
 
 #include <string>
+#include <charconv>
 #include <exception>
 #include <stdexcept>
 #include <cstdlib>
 #include <atomic>
+#include <type_traits>
+#include <shared_mutex>
 
 namespace spi
 {
-	class ConfigValue
+	namespace traits
 	{
-	public:
-
-		inline const std::string asString() const
+		template <typename T>
+		constexpr bool isAtomic()
 		{
-			return "";// text.load(std::memory_order::memory_order_acq_rel);
+			return std::is_trivially_copyable_v<T> && std::is_copy_constructible_v<T> && std::is_move_constructible_v<T>
+				&& std::is_copy_assignable_v<T> && std::is_move_assignable_v<T>;
 		}
-
-		virtual float asFloat() const = 0;
-		virtual int asInt() const = 0;
-		virtual bool asBool() const = 0;
-
-		inline void fromString(const std::string& value)
-		{
-			//text.store(value, std::memory_order::memory_order_acq_rel);
-		}
-
-		virtual void fromFloat(float value) = 0;
-		virtual void fromInt(int value) = 0;
-		virtual void fromBool(bool value) = 0;
-
-	protected:
-		virtual void updateValue(const std::string& value) = 0;
-
-	private:
-		//std::atomic<std::string> text;
-	};
+	}
 
 	template <typename V>
-	class SimpleValue : ConfigValue
+	struct AtomicValue
 	{
-	public:
-		virtual float asFloat() const
-		{
-			return static_cast<float>(get());
-		}
+		using value_type = V;
 
-		virtual int asInt() const
+		AtomicValue()
 		{
-			return static_cast<int>(get());
 		}
-
-		virtual bool asBool() const
-		{
-			return static_cast<bool>(get());
-		}
-
-		virtual void fromFloat(float src)
+		AtomicValue(V src)
 		{
 			set(src);
 		}
+		AtomicValue(const AtomicValue<V>& src) = delete;
+		AtomicValue(AtomicValue<V>&& src) = delete;
+		AtomicValue<V>& operator = (const AtomicValue<V>& src) = delete;
+		AtomicValue<V>& operator = (AtomicValue<V>&& src) = delete;
 
-		virtual void fromInt(int src)
+		V get() const
 		{
-			set(src);
+			return value.load(std::memory_order::memory_order_acquire);
 		}
-
-		virtual void fromBool(bool src)
+		void set(const V src)
 		{
-			set(src);
-		}
-
-	protected:
-		inline V get()
-		{
-			return value.load(std::memory_order::memory_order_acq_rel);
-		}
-
-		inline void set(V src)
-		{
-			value.store(src, std::memory_order::memory_order_acq_rel);
-		}
-
-		virtual void updateValue(const std::string& src)
-		{
-			value.store(::atof(src.c_str()), std::memory_order::memory_order_acq_rel);
+			value.store(src, std::memory_order::memory_order_release);
 		}
 
 	private:
 		std::atomic<V> value;
 	};
 
+	template <typename V>
+	struct LockedValue
+	{
+		using value_type = std::string;
 
+		LockedValue()
+		{
+		}
+		LockedValue(const V& src)
+		{
+			set(src);
+		}
+		LockedValue(const LockedValue<V>& src) = delete;
+		LockedValue(LockedValue<V>&& src) = delete;
+		LockedValue<V>& operator = (const LockedValue<V>& src) = delete;
+		LockedValue<V>& operator = (LockedValue<V>&& src) = delete;
+
+		V get() const
+		{
+			std::shared_lock lock{ mutex };
+			return value;
+		}
+		void set(const V& src)
+		{
+			std::unique_lock lock{ mutex };
+			value = src;
+		}
+
+	private:
+		mutable std::shared_mutex mutex;
+		V value;
+	};
+
+	template <typename V, typename N = std::conditional<traits::isAtomic<V>(), AtomicValue<V>, LockedValue<V>>::type>
+	struct Value
+	{
+		using value_type = V;
+		using wrapper_type = N;
+
+		Value()
+		{
+		}
+
+		Value(V src)
+		{
+			value.set(src);
+		}
+		Value(const Value<V, N>& src) = delete;
+		Value(const Value<V, N>&& src) = delete;
+		Value<V, N> operator = (const Value<V, N>& src) = delete;
+		Value<V, N> operator = (Value<V, N>&& src) = delete;
+
+		V get() const
+		{
+			return value.get();
+		}
+
+		void set(V src)
+		{
+			value.set(src);
+		}
+	private:
+		N value;
+	};
+
+	/*
 	class PersistedConfiguration
 	{
 	public:
@@ -143,5 +168,5 @@ namespace spi
 	inline const bool& PersistedConfiguration::get<bool>(const std::string& name) const
 	{
 		return node(name).asBool();
-	}
+	}*/
 }
